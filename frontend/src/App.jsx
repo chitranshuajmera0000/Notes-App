@@ -8,6 +8,33 @@ import NotesList from './components/NotesList';
 function App() {
   const [user, setUser] = useState(null);
   const { notes, loading, error, addNote, deleteNote, updateNote } = useNotes(user);
+  const [showLogoutMessage, setShowLogoutMessage] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = () => {
+    setShowLogoutMessage(true);
+  };
+
+  const confirmLogout = () => {
+    setIsLoggingOut(true);
+    setShowLogoutMessage(false);
+
+    // Actual logout logic
+    axios.get("http://localhost:3000/api/auth/logout", { withCredentials: true })
+      .then(() => {
+        setUser(null);
+        window.location.href = "/";
+      })
+      .catch((error) => {
+        console.error('Logout failed:', error);
+        setIsLoggingOut(false);
+        // Optionally show error message to user
+      });
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutMessage(false);
+  };
 
   useEffect(() => {
     axios.get("http://localhost:3000/api/auth/user", { withCredentials: true })
@@ -18,16 +45,6 @@ function App() {
         setUser(null);
       });
   }, []);
-
-  const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      axios.get("http://localhost:3000/api/auth/logout", { withCredentials: true })
-        .then(() => {
-          setUser(null);
-          window.location.href = "/";
-        });
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -63,15 +80,18 @@ function App() {
                       <p className="text-gray-500 text-xs">{user.email}</p>
                     </div>
                   </div>
-                  
+
                   {/* Logout Button */}
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-2 px-4 py-2.5 text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 border border-gray-200 hover:border-red-200"
+                    disabled={isLoggingOut}
+                    className="flex items-center gap-2 px-4 py-2.5 text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 border border-gray-200 hover:border-red-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     title="Logout"
                   >
-                    <LogOut className="w-4 h-4" />
-                    <span className="hidden sm:inline font-medium">Logout</span>
+                    <LogOut className={`w-4 h-4 ${isLoggingOut ? 'animate-spin' : ''}`} />
+                    <span className="hidden sm:inline font-medium">
+                      {isLoggingOut ? 'Logging out...' : 'Logout'}
+                    </span>
                   </button>
                 </div>
               ) : (
@@ -89,11 +109,11 @@ function App() {
         {user ? (
           <main className="space-y-8">
             <NoteForm addNote={addNote} loading={loading} />
-            <NotesList 
-              notes={notes} 
-              onDelete={deleteNote} 
+            <NotesList
+              notes={notes}
+              onDelete={deleteNote}
               onUpdate={updateNote}
-              loading={loading} 
+              loading={loading}
             />
             {error && (
               <div className="max-w-2xl mx-auto p-4 bg-red-50 border border-red-200 rounded-xl">
@@ -115,6 +135,38 @@ function App() {
                 Get Started
               </button>
             </a>
+          </div>
+        )}
+
+        {/* Logout Confirmation Modal */}
+        {showLogoutMessage && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-md mx-4 border border-gray-200">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <LogOut className="w-8 h-8 text-red-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Confirm Logout</h3>
+                <p className="text-gray-600 mb-6">
+                  Are you sure you want to logout? You'll need to sign in again to access your notes.
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    onClick={cancelLogout}
+                    className="px-6 py-2.5 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium transition-colors duration-200"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={confirmLogout}
+                    disabled={isLoggingOut}
+                    className="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isLoggingOut ? 'Logging out...' : 'Yes, Logout'}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
