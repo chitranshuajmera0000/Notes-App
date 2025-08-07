@@ -100,7 +100,7 @@ function App() {
     setShowLogoutMessage(false);
 
     // Actual logout logic
-    axios.get("http://localhost:3000/api/auth/logout", { withCredentials: true })
+    axios.get(`${import.meta.env.VITE_API_URL}/auth/logout`, { withCredentials: true })
       .then(() => {
         setUser(null);
         toast.success('Logged out successfully!');
@@ -125,7 +125,7 @@ function App() {
 
   useEffect(() => {
     setUserLoading(true);
-    axios.get("http://localhost:3000/api/auth/user", { withCredentials: true })
+    axios.get(`${import.meta.env.VITE_API_URL}/auth/user`, { withCredentials: true })
       .then(response => {
         setUser(response.data);
         setUserLoading(false);
@@ -303,13 +303,13 @@ function App() {
                 Sign in with your Google or GitHub account to start creating and managing your personal notes.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-md">
-                <a href="http://localhost:3000/api/auth/google" className="w-full sm:w-auto">
+                <a href={`${import.meta.env.VITE_API_URL}/auth/google`} className="w-full sm:w-auto">
                   <button className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-4 bg-white/80 backdrop-blur-sm text-gray-800 border border-white/30 rounded-2xl font-semibold hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl text-base sm:text-lg flex items-center gap-2">
                     <svg width="32" height="32" className="sm:w-10 sm:h-10" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><g clipPath="url(#clip0_17_40)"><path d="M47.5 24.5C47.5 22.5 47.3 20.7 47 19H24V29.5H37.5C36.8 33.1 34.3 36.1 30.7 38.1L39.2 44.6C43.7 40.5 47.5 33.5 47.5 24.5Z" fill="#4285F4" /><path d="M24 48C30.6 48 36.1 45.9 39.2 44.6L30.7 38.1C29.1 39.1 26.8 39.8 24 39.8C17.7 39.8 12.2 35.7 10.3 30.2L1.5 36.1C5.5 43.2 13.1 48 24 48Z" fill="#34A853" /><path d="M10.3 30.2C9.8 29.2 9.5 28.1 9.5 27C9.5 25.9 9.8 24.8 10.3 23.8L1.5 17.9C-0.5 21.5-0.5 26.5 1.5 30.1L10.3 30.2Z" fill="#FBBC05" /><path d="M24 8.2C27.1 8.2 29.8 9.3 31.7 11.1L39.4 3.4C36.1 0.3 30.6-1.1 24 0.1C13.1 0.1 5.5 4.9 1.5 12L10.3 17.9C12.2 12.3 17.7 8.2 24 8.2Z" fill="#EA4335" /></g><defs><clipPath id="clip0_17_40"><rect width="48" height="48" fill="white" /></clipPath></defs></svg>
                     <span>Get Started with Google</span>
                   </button>
                 </a>
-                <a href="http://localhost:3000/api/auth/github" className="w-full sm:w-auto">
+                <a href={`${import.meta.env.VITE_API_URL}/auth/github`} className="w-full sm:w-auto">
                   <button className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-4 bg-gray-900/90 backdrop-blur-sm text-white rounded-2xl font-semibold hover:bg-black/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl text-base sm:text-lg flex items-center gap-2">
                     <svg width="32" height="32" className="sm:w-10 sm:h-10 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.75.41-1.27.74-1.56-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.7.42.36.79 1.09.79 2.2 0 1.59-.01 2.87-.01 3.26 0 .31.21.67.8.56C20.71 21.39 24 17.08 24 12c0-6.27-5.23-11.5-12-11.5z" /></svg>
                     <span>Get Started with GitHub</span>
