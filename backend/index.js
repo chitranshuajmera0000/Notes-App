@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import passport from "passport";
-
+import MongoStore from "connect-mongo";
 import session from "express-session";
 import "./passport.js"; // import your passport config
 
@@ -21,16 +21,17 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 
 app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
-      sameSite: "none", // required for cross-origin
-      secure: true      // required for HTTPS
-    },
-  })
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+        cookie: {
+            maxAge: 24 * 60 * 60 * 1000,
+            sameSite: "none", // required for cross-origin
+            secure: true      // required for HTTPS
+        },
+    })
 );
 
 
