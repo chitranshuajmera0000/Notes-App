@@ -21,12 +21,16 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 
 app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 1 day
-    })
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: "none", // required for cross-origin
+      secure: true      // required for HTTPS
+    },
+  })
 );
 
 
