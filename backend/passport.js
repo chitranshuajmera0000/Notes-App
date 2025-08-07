@@ -7,17 +7,20 @@ import dotenv from "dotenv";
 dotenv.config();  
 
 passport.serializeUser((user, done) => {
+  console.log("Serializing user:", user);
   done(null, user._id);
-} 
-);
+});
+
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findById(id);       
+    const user = await User.findById(id);
+    console.log("Deserializing user by id:", id, "Found:", user);
     done(null, user);
   } catch (err) {
     done(err, null);
-  } 
+  }
 });
+
 passport.use(
   new GoogleStrategy(
     {
@@ -27,15 +30,17 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+        console.log("Google profile:", profile);
         let user = await User.findOne({ googleId: profile.id });
         if (!user) {
           user = await User.create({
             googleId: profile.id,
             displayName: profile.displayName,
-            email: profile.emails[0].value,
-            photo: profile.photos[0].value,
+            email: profile.emails && profile.emails[0] ? profile.emails[0].value : undefined,
+            photo: profile.photos && profile.photos[0] ? profile.photos[0].value : undefined,
           });
         }
+        console.log("Google user in DB:", user);
         done(null, user);
       } catch (err) {
         done(err, null);
@@ -43,6 +48,8 @@ passport.use(
     }
   )
 );
+
+
 
 // GitHub OAuth Strategy
 passport.use(
