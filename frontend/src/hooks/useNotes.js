@@ -6,22 +6,24 @@ export default function useNotes(user) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     if (!user) {
       setNotes([]);
       return;
     }
     setLoading(true);
-    axios.get('http://localhost:3000/api/notes', { withCredentials: true })
+    axios.get(`${API_URL}/notes`, { withCredentials: true })
       .then(res => setNotes(res.data))
       .catch(err => setError(err))
       .finally(() => setLoading(false));
-  }, [user]);
+  }, [user, API_URL]);
 
   const addNote = async (title, content) => {
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:3000/api/notes', { title, content }, { withCredentials: true });
+      const res = await axios.post(`${API_URL}/notes`, { title, content }, { withCredentials: true });
       setNotes(prev => [...prev, res.data]);
     } catch (err) {
       setError(err);
@@ -33,7 +35,7 @@ export default function useNotes(user) {
   const deleteNote = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:3000/api/notes/${id}`, { withCredentials: true });
+      await axios.delete(`${API_URL}/notes/${id}`, { withCredentials: true });
       setNotes(prev => prev.filter(note => note._id !== id));
     } catch (err) {
       setError(err);
@@ -48,7 +50,7 @@ export default function useNotes(user) {
   const updateNote = async (id, title, content) => {
     try {
       setLoading(true);
-      const response = await axios.put(`http://localhost:3000/api/notes/${id}`, {
+      const response = await axios.put(`${API_URL}/notes/${id}`, {
         title,
         content
       }, { withCredentials: true });
