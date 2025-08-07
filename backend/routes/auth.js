@@ -50,6 +50,7 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/user", (req, res) => {
+    console.log("Auth user route hit. req.user:", req.user);
     res.json(req.user || null);
 });
 
