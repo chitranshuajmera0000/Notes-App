@@ -1,7 +1,26 @@
+// GitHub OAuth
 import { Router } from "express";
 import passport from "passport";
 
 const router = Router();
+
+
+
+router.get(
+    "/github",
+    passport.authenticate("github", { scope: ["user:email"] })
+);
+
+router.get(
+    "/github/callback",
+    passport.authenticate("github", {
+        failureRedirect: "/login",
+        session: true,
+    }),
+    (req, res) => {
+        res.redirect(process.env.FRONTEND_URL);
+    }
+);
 
 router.get(
     "/google",
@@ -16,10 +35,6 @@ router.get(
     }),
     (req, res) => {
         // Redirect to frontend after successful login
-        // return res.json({
-        //     message: "Login successful",
-        //     user: req.user,
-        // });
         res.redirect(process.env.FRONTEND_URL);
     }
 );

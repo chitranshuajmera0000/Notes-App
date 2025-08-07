@@ -1,6 +1,2 @@
-module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
-}
+
+// Renamed to postcss.config.cjs for CommonJS compatibility
