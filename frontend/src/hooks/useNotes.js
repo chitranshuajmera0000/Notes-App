@@ -14,7 +14,7 @@ export default function useNotes(user) {
       return;
     }
     setLoading(true);
-    axios.get(`${API_URL}/notes`, { credentials: 'include', withCredentials: true })
+    axios.get(`${API_URL}/notes`, { withCredentials: true })
       .then(res => setNotes(res.data))
       .catch(err => setError(err))
       .finally(() => setLoading(false));
@@ -23,7 +23,7 @@ export default function useNotes(user) {
   const addNote = async (title, content) => {
     setLoading(true);
     try {
-      const res = await axios.post(`${API_URL}/notes`, { title, content }, { credentials: 'include', withCredentials: true });
+      const res = await axios.post(`${API_URL}/notes`, { title, content }, { withCredentials: true });
       setNotes(prev => [...prev, res.data]);
     } catch (err) {
       setError(err);
@@ -35,7 +35,7 @@ export default function useNotes(user) {
   const deleteNote = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`${API_URL}/notes/${id}`, { credentials: 'include', withCredentials: true });
+      await axios.delete(`${API_URL}/notes/${id}`, { withCredentials: true });
       setNotes(prev => prev.filter(note => note._id !== id));
     } catch (err) {
       setError(err);
@@ -53,7 +53,7 @@ export default function useNotes(user) {
       const response = await axios.put(`${API_URL}/notes/${id}`, {
         title,
         content
-      }, { credentials: 'include', withCredentials: true });
+      }, { withCredentials: true });
 
       setNotes(prevNotes =>
         prevNotes.map(note =>
