@@ -198,22 +198,22 @@ function App() {
               <div className="flex items-center gap-4 w-full sm:w-auto">
                 {/* Desktop Menu */}
                 <div className="hidden sm:flex items-center gap-4">
-                  <div className="flex items-center gap-3 px-4 py-2 bg-gray-50/80 backdrop-blur-sm rounded-xl border border-white/20">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
+                  <div className="flex items-center gap-3 px-4 py-2.5 bg-gray-50/80 backdrop-blur-sm rounded-xl border border-white/20">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-md flex-shrink-0">
                       {getUserInitial()}
                     </div>
-                    <div className="text-sm">
-                      <p className="font-semibold text-gray-800">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-gray-800 text-sm leading-tight truncate max-w-[120px]">
                         {getDisplayName()}
                       </p>
                       {user.email && (
-                        <p className="text-gray-600 text-xs">{user.email}</p>
+                        <p className="text-gray-600 text-xs leading-tight truncate max-w-[120px]">{user.email}</p>
                       )}
                     </div>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50/80 backdrop-blur-sm rounded-xl transition-all duration-200 border border-transparent hover:border-red-200"
+                    className="flex items-center gap-2 px-4 py-2.5 text-red-600 hover:bg-red-50/80 backdrop-blur-sm rounded-xl transition-all duration-200 border border-transparent hover:border-red-200 flex-shrink-0"
                   >
                     <LogOut className="w-4 h-4" />
                     <span className="font-medium">Logout</span>
@@ -233,15 +233,15 @@ function App() {
               {showMobileMenu && (
                 <div className="sm:hidden w-full pt-4 border-t border-gray-200 space-y-3">
                   <div className="flex items-center gap-3 p-3 bg-gray-50/80 backdrop-blur-sm rounded-xl border border-white/20">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-md flex-shrink-0">
                       {getUserInitial()}
                     </div>
-                    <div>
-                      <p className="font-semibold text-gray-800">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-gray-800 leading-tight truncate">
                         {getDisplayName()}
                       </p>
                       {user.email && (
-                        <p className="text-sm text-gray-600">{user.email}</p>
+                        <p className="text-sm text-gray-600 leading-tight truncate">{user.email}</p>
                       )}
                     </div>
                   </div>
