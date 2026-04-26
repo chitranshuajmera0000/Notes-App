@@ -1,253 +1,165 @@
-# Notes App
+# 📓 Notes App - Full Stack Note Management
 
-A full-stack note-taking application built with React (Vite), Tailwind CSS, Node.js + Express, and MongoDB. Sign in with Google, create/edit/delete notes, and enjoy a responsive, modular UI.
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Tech](https://img.shields.io/badge/tech-MERN-blueviolet.svg)
+![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-- Live demo (if available): `https://notes-app-six-sable-89.vercel.app`  
-- Languages: JavaScript, CSS, HTML  
-
----
-
-## Table of contents
-
-1. [Features](#features)  
-2. [Tech Stack](#tech-stack)  
-3. [Project structure](#project-structure)  
-4. [Prerequisites](#prerequisites)  
-5. [Quick start (local development)](#quick-start-local-development)  
-6. [Environment variables](#environment-variables)  
-7. [Running / Scripts](#running--scripts)  
-8. [OAuth setup (Google)](#oauth-setup-google)  
-9. [API overview](#api-overview)  
-10. [Deployment](#deployment)  
-11. [Troubleshooting](#troubleshooting)  
-12. [Examples](#examples)  
-13. [Contributing](#contributing)  
-14. [Contributors](#contributors)  
-15. [License](#license)  
-16. [Acknowledgements](#acknowledgements)  
+A sophisticated, full-stack note-taking application designed for modern workflows. Built with **React 19**, **Vite 7**, **Tailwind CSS 4**, **Node.js**, **Express 5**, and **MongoDB**. Featuring secure OAuth-based authentication and a premium, glassy UI experience.
 
 ---
 
-## Features
+## ✨ Project Showcase
 
-- Google OAuth authentication  
-- Create, read, update, delete (CRUD) notes  
-- User-owned notes (notes scoped to signed-in users)  
-- Modular React component structure (clean UI separation)  
-- Responsive UI made with Tailwind CSS  
-- Express API with MongoDB (Mongoose)  
-- Designed for easy local development and deployment  
+![Notes App Dashboard Mockup](assets/dashboard-mockup.png)
+
+
+> **Live Demo:** [notes-app-six-sable-89.vercel.app](https://notes-app-six-sable-89.vercel.app)
 
 ---
 
-## Tech stack
+## 🚀 Key Features
 
-- **Frontend:** React (Vite), Tailwind CSS  
-- **Backend:** Node.js, Express, Passport (Google OAuth), Mongoose (MongoDB)  
-- **Database:** MongoDB (local or Atlas)  
-- **Deployment examples:** Vercel/Netlify (frontend), Heroku/Render (backend)  
+- **🔐 Secure Authentication:** Seamless login via Google and GitHub OAuth 2.0 integration.
+- **📝 Real-time CRUD:** Effortlessly create, read, update, and delete notes with instant UI feedback.
+- **🎨 Modern Glassmorphism:** A premium UI featuring glassy translucent cards, animated background gradients, and sleek transitions.
+- **📱 Responsive by Design:** Fully optimized for all devices with a custom mobile navigation system.
+- **⚡ Performance First:** Built with Vite 7 for lightning-fast development and optimized production builds.
+- **🧘 User Privacy:** Notes are securely scoped to individual user accounts.
 
 ---
 
-## Project structure
+## 🛠️ Tech Stack
 
+### Frontend
+- **Framework:** [React 19](https://react.dev/)
+- **Build Tool:** [Vite 7](https://vitejs.dev/)
+- **Styling:** [Tailwind CSS 4](https://tailwindcss.com/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **Toasts:** [React Hot Toast](https://react-hot-toast.com/)
+- **HTTP:** [Axios](https://axios-http.com/)
+
+### Backend
+- **Runtime:** [Node.js](https://nodejs.org/)
+- **Framework:** [Express 5](https://expressjs.com/)
+- **Auth:** [Passport.js](https://www.passportjs.org/) (Google & GitHub Strategies)
+- **Database:** [MongoDB](https://www.mongodb.com/)
+- **ORM:** [Mongoose 8](https://mongoosejs.com/)
+- **Session:** [express-session](https://www.npmjs.com/package/express-session) + [connect-mongo](https://www.npmjs.com/package/connect-mongo)
+
+---
+
+## 📐 Architecture Overview
+
+```mermaid
+graph LR
+    User([User]) <--> Frontend[React Frontend]
+    Frontend <--> Proxy[Vercel/Vite Proxy]
+    Proxy <--> Backend[Express API]
+    Backend <--> Auth[Passport OAuth]
+    Backend <--> DB[(MongoDB)]
+    Auth <--> Google[(Google Cloud)]
+    Auth <--> GitHub[(GitHub API)]
 ```
+
+---
+
+## 📁 Project Structure
+
+```text
 Notes-App/
-├─ backend/        # Express API, models, auth (Passport), .env
-├─ frontend/       # Vite + React app, Tailwind CSS, components
-├─ .env.local      # (should be gitignored)
-├─ README.md
-└─ .gitignore
+├── backend/            # Express API, Mongoose Models, Auth Logic
+│   ├── routes/         # API Route definitions
+│   ├── models/         # MongoDB Schemas
+│   └── passport.js     # OAuth Strategy Config
+├── frontend/           # React Application (Vite + Tailwind)
+│   ├── src/
+│   │   ├── components/ # Reusable UI Components
+│   │   ├── hooks/      # Custom React Hooks
+│   │   └── App.jsx     # Main Application Entry
+└── README.md           # Documentation
 ```
 
 ---
 
-## Prerequisites
+## ⚙️ Development Setup
 
-- Node.js (v18+ recommended)  
-- npm (or yarn)  
-- MongoDB instance (local `mongod` or MongoDB Atlas)  
-- Google Cloud project + OAuth credentials (Client ID & Secret)  
+### 1. Prerequisites
+- **Node.js** v18+ 
+- **npm** or **yarn**
+- **MongoDB** account (Atlas)
+- **Google & GitHub** Developer Credentials
 
----
-
-## Quick start (local development)
-
-1. Clone the repository:
+### 2. Clone & Install
 ```bash
 git clone https://github.com/chitranshuajmera0000/Notes-App.git
 cd Notes-App
+
+# Install Backend Dependencies
+cd backend && npm install
+
+# Install Frontend Dependencies
+cd ../frontend && npm install
 ```
 
-2. Install backend dependencies:
-```bash
-cd backend
-npm install
-```
+### 3. Environment Configuration
+Create a `.env` in `backend/` and `.env.local` in `frontend/`.
 
-3. Install frontend dependencies:
-```bash
-cd ../frontend
-npm install
-```
-
-4. Configure environment variables (see next section).
-
-5. Start backend (in one terminal):
-```bash
-cd backend
-npm start
-# or
-npm run dev
-```
-
-6. Start frontend (in another terminal):
-```bash
-cd frontend
-npm run dev
-```
-
-7. Open the app in your browser:  
-- Frontend: `http://localhost:5173`  
-- Backend: `http://localhost:3000`  
-
----
-
-## Environment variables
-
-Create a `.env` file in **backend** and `.env.local` in **frontend**.  
-
-**Example `backend/.env`:**
-```bash
-# MongoDB
-MONGO_URI=mongodb+srv://<user>:<pass>@cluster0.mongodb.net/notes-app?retryWrites=true&w=majority
-
-# Server
+**Backend `.env`:**
+```env
+MONGO_URI=your_mongodb_connection_string
 PORT=3000
-SESSION_SECRET=your_session_secret_here
+SESSION_SECRET=your_super_secret_key
+FRONTEND_URL=http://localhost:5173
 
-# Google OAuth
-GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_CLIENT_ID=your_google_id
+GOOGLE_CLIENT_SECRET=your_google_secret
 GOOGLE_CALLBACK_URL=http://localhost:3000/api/auth/google/callback
+
+GITHUB_CLIENT_ID=your_github_id
+GITHUB_CLIENT_SECRET=your_github_secret
+GITHUB_CALLBACK_URL=http://localhost:3000/api/auth/github/callback
 ```
 
-**Example `frontend/.env.local`:**
-```bash
+**Frontend `.env.local`:**
+```env
 VITE_API_URL=http://localhost:3000/api
 ```
 
----
-
-## Running / Scripts
-
-**Backend**
-```bash
-cd backend
-npm install
-npm start        # production
-npm run dev      # development
-```
-
-**Frontend**
-```bash
-cd frontend
-npm install
-npm run dev      # Vite dev server
-npm run build    # build for production
-npm run preview  # preview production build
-```
+### 4. Running the App
+**Terminal 1 (Backend):** `cd backend && npm run dev`  
+**Terminal 2 (Frontend):** `cd frontend && npm run dev`
 
 ---
 
-## OAuth setup (Google)
+## 🔌 API Documentation
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials.  
-2. Create OAuth 2.0 Client ID (type: Web application).  
-3. Add redirect URIs:
-   - `http://localhost:3000/api/auth/google/callback`  
-   - (and your production callback URI, e.g., `https://yourdomain.com/api/auth/google/callback`)  
-4. Copy Client ID & Secret into backend `.env`.  
+### Authentication
+- `GET /api/auth/google` - Initiate Google login
+- `GET /api/auth/github` - Initiate GitHub login
+- `GET /api/auth/user` - Fetch authenticated user data
+- `GET /api/auth/logout` - Securely log out user
 
----
-
-## API overview
-
-**Auth routes:**
-```
-GET  /api/auth/google           # start Google OAuth
-GET  /api/auth/google/callback  # OAuth callback
-GET  /api/auth/logout           # logout
-```
-
-**Notes routes:**
-```
-GET     /api/notes       # list user’s notes
-POST    /api/notes       # create a new note
-GET     /api/notes/:id   # get single note
-PUT     /api/notes/:id   # update a note
-DELETE  /api/notes/:id   # delete a note
-```
+### Notes (Protected Routes)
+- `GET /api/notes` - Retrieve all notes for current user
+- `POST /api/notes` - Create a new note
+- `PUT /api/notes/:id` - Update an existing note
+- `DELETE /api/notes/:id` - Remove a note
 
 ---
 
-## Deployment
+## 🤝 Contributing & Support
 
-**Frontend:** Deploy Vite build (`npm run build`) to Vercel/Netlify.  
-**Backend:** Deploy to Heroku, Render, Railway, etc. Add environment variables in hosting dashboard.  
+Contributions are welcome! If you find a bug or have a feature request, please open an issue.
 
-Make sure to:
-- Set correct API URLs in frontend `.env`.  
-- Update Google OAuth redirect URI to match deployed backend.  
+- **Author:** [Chitranshu Ajmera](https://github.com/chitranshuajmera0000)
+- **Repo:** [Notes-App](https://github.com/chitranshuajmera0000/Notes-App)
 
 ---
 
-## Troubleshooting
+## 📜 License
 
-- **redirect_mismatch:** Redirect URI in Google Console doesn’t match backend `.env`.  
-- **MongoDB errors:** Check `MONGO_URI` and Atlas network whitelist.  
-- **CORS issues:** Add CORS middleware or proxy config.  
-- **Cookies not persisting:** Check `SESSION_SECRET` and cookie settings (`secure`, `sameSite`).  
-- **Port in use:** Change `PORT` or Vite’s port.  
+Licensed under the **MIT License**. See `LICENSE` for details.
 
----
+*Crafted with ❤️ for a seamless note-taking experience.*
 
-## Examples
-
-**Create a new note:**
-```bash
-curl -X POST http://localhost:3000/api/notes   -H "Content-Type: application/json"   -d '{"title":"Shopping", "content":"Buy milk and eggs"}'
-```
-
----
-
-## Contributing
-
-1. Fork the repo  
-2. Create a feature branch:  
-   ```bash
-   git checkout -b feat/my-feature
-   ```  
-3. Commit changes and push  
-4. Open a Pull Request  
-
----
-
-## Contributors
-
-- Original author: [@chitranshuajmera0000](https://github.com/chitranshuajmera0000)  
-
----
-
-## License
-
-This project is licensed under the **MIT License**.  
-
----
-
-## Acknowledgements
-
-- React, Vite, Tailwind CSS  
-- Node.js, Express, Passport.js  
-- MongoDB / Mongoose  
-- Google OAuth  
